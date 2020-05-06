@@ -11,6 +11,8 @@ import { UpdateClientComponent } from './client/update-client/update-client.comp
 import { UpdateEmployeeComponent } from './employee/update-employee/update-employee.component';
 import { ClientHeaderComponent } from './client/client-header/client-header.component';
 import { EmployeeHeaderComponent } from './employee/employee-header/employee-header.component';
+import { ShowAllClientComponent } from './client/show-all-client/show-all-client.component';
+import { ViewClientPageComponent } from './client/view-client-page/view-client-page.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { EmployeeHeaderComponent } from './employee/employee-header/employee-hea
     UpdateClientComponent,
     UpdateEmployeeComponent,
     ClientHeaderComponent,
-    EmployeeHeaderComponent
+    EmployeeHeaderComponent,
+    ShowAllClientComponent,
+    ViewClientPageComponent
 	
   ],
   imports: [

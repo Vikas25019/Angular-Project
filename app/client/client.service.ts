@@ -27,4 +27,21 @@ export class ClientService {
   private handleError(error: Response){
 	return Observable.throw(error);
   }
+  
+  deleteClient(clientId : string){
+		return this._httpService.delete("http://127.0.0.1:8989/ProjectDemo/deleteClient/"+clientId);
+	}
+
+  retrieveClient(clientId : string): Observable<Client[]>{
+		return this._httpService.get("http://127.0.0.1:8989/ProjectDemo/retrieveClient/"+clientId)
+		.map((response: Response)=>response.json()).catch(this.handleError);;
+	}
+	
+  updateClient(client:Client){
+	let body = JSON.stringify(client);
+	let headers = new Headers({'Content-Type':'application/json'});
+	let options = new RequestOptions({headers:headers});
+	return this._httpService.post("http://127.0.0.1:8989/ProjectDemo/updateClient",body,options);
+  }
+  
 }

@@ -21,6 +21,7 @@ export class CreateClientComponent implements OnInit {
 		.subscribe((response) => {
 			console.log(response);
 			alert(response["_body"]);
+			this.reset();
 		},
 		(error)=>{
 			console.log(error);
@@ -28,15 +29,11 @@ export class CreateClientComponent implements OnInit {
 		
 		)
 	}
-	
-  getClient():void{
-		this._clientService.getAllClient()
-		.subscribe((clientData) => {
-			this.clients = clientData,
-			console.log(clientData)
-			},(error) =>{
-			console.log(error);
-		});
-	}
+
+  private reset(){
+  this.client.id = null;
+  this.client.name = null;
+  this.client.address = null;
+  }
 	
 }
