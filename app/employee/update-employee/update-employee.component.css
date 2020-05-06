@@ -1,0 +1,20 @@
+
+.middle{
+    margin-top:100px;
+	display:flex;
+	flex-direction:row;
+	justify-content:center;
+}
+
+.middle .insert,.middle .update{
+    margin:50px;
+}
+
+.middle .insert form input , .middle .update form input{
+    outline-width: 0;
+    border:none;
+    border-radius: 20px;
+    padding: 15px 8px 15px 8px;
+    width : 400px;
+    margin-top:30px;
+}

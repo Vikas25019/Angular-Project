@@ -18,26 +18,3 @@
     width : 400px;
     margin-top:30px;
 }
-
-.middle .retrieve{
-    margin:50px;
-}
-
-.middle .retrieve form input{
-   outline-width: 0;
-   border:none;
-   border-radius: 20px;
-   padding: 15px 8px 15px 8px;
-   width : 400px;
-   margin-top:30px;
-}
-
-.middle .retrieve .retrieveAll{
-    text-align:center;
-}
-
-.middle .retrieveAll form input{
-    color:white;
-    text-align:center;
-    background:none;
-}

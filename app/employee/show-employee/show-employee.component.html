@@ -5,12 +5,12 @@
         <div class="retrieve" id = "retrieve">
             <p style="color:white;text-align:center;font-size:20px;">SHOW EMPLOYEE INFORMATION</p>
             <form action="retrieve-employee" method="get">
-                <input type="text" name="employeeId" placeholder="Enter employee id"><br>
-                <input type="submit" style="text-align:center;cursor:pointer;" value="show">
+                <input type="text"  [(ngModel)] = "employee.id" name="employeeId" placeholder="Enter employee id"><br>
+                <input [routerLink]="['/viewemployee',employee.id]" type="submit" style="text-align:center;cursor:pointer;" value="show">
             </form>
             <div class="retrieveAll">
                 <form action ="retrieve-all-employee" method="get">
-                    <input type="submit" style="cursor:pointer;" value="show all">
+                    <a routerLink="/showAllEmployee" style="color:white;text-decoration:none;">show all</a>
                 </form>
             </div>
         </div>

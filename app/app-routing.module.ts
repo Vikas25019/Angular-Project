@@ -9,17 +9,23 @@ import { CreateEmployeeComponent } from './employee/create-employee/create-emplo
 import { ShowEmployeeComponent } from './employee/show-employee/show-employee.component';
 import { ShowAllClientComponent } from './client/show-all-client/show-all-client.component';
 import { UpdateClientComponent } from './client/update-client/update-client.component';
+import { UpdateEmployeeComponent } from './employee/update-employee/update-employee.component';
 import { ViewClientPageComponent } from './client/view-client-page/view-client-page.component';
+import { ShowAllEmployeeComponent } from './employee/show-all-employee/show-all-employee.component';
+import { ViewEmployeePageComponent } from './employee/view-employee-page/view-employee-page.component';
 
 const routes: Routes = [
 	{path: '',component: HomepageComponent},
 	{path: 'createclient',component: CreateClientComponent},
 	{path: 'updateClient/:id',component: UpdateClientComponent},
+	{path: 'updateEmployee/:id/:clientId',component: UpdateEmployeeComponent},
 	{path: 'createemployee',component: CreateEmployeeComponent},
 	{path: 'showclient',component: ShowClientComponent},
 	{path: 'viewclient/:id',component: ViewClientPageComponent},
+	{path: 'viewemployee/:id',component: ViewEmployeePageComponent},
 	{path: 'showemployee',component: ShowEmployeeComponent},
 	{path: 'showAllClient',component: ShowAllClientComponent},
+	{path: 'showAllEmployee',component: ShowAllEmployeeComponent},
 	{path: '**',component: PageNotFoundComponent}
 ];
 
@@ -28,4 +34,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [CreateClientComponent,ShowClientComponent,ViewClientPageComponent,ShowAllClientComponent,UpdateClientComponent,PageNotFoundComponent,  HomepageComponent ,CreateEmployeeComponent,ShowEmployeeComponent]
+export const routingComponents = [CreateClientComponent,ShowClientComponent,ViewEmployeePageComponent,ViewClientPageComponent,ShowAllClientComponent,ShowAllEmployeeComponent,UpdateEmployeeComponent,UpdateClientComponent,PageNotFoundComponent,  HomepageComponent ,CreateEmployeeComponent,ShowEmployeeComponent]

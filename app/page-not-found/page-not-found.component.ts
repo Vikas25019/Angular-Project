@@ -3,12 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-page-not-found',
   template: `
-    <h3>
+    <h3 style="color:white">
       Page Not Found.
     </h3>
   `,
-  styles: [
-  ]
+  styles: []
 })
 export class PageNotFoundComponent implements OnInit {
 
