@@ -21,6 +21,7 @@ public class ClientService {
     IDaoInterface<Client, MysqlDatabaseOperation> daoInterface;
     MysqlDatabaseOperation<Client> mysqlDatabaseOperation = MysqlDatabaseOperation.getInstance();
 	List<String> messageList = new ArrayList();
+	
     public String create(Client client) {
         String ID = "clientId";
         String message = "";
@@ -53,10 +54,11 @@ public class ClientService {
         return message;
     }
 
-    public String retrieve(Client client, Model model) {
-        boolean success = false;
+    public LinkedHashMap<String, String> retrieve(Client client, Model model) {
+        
         String column = "clientId";
         String message = "";
+        LinkedHashMap<String, String> viewData  = new LinkedHashMap<>();
         LinkedHashMap<String, String> checkData = new LinkedHashMap<>();
         ClientService clientService = new ClientService();
         String id = client.getId();
@@ -66,9 +68,8 @@ public class ClientService {
             if (valid) {
                 boolean checkId = daoInterface.isIdPresent(client, mysqlDatabaseOperation, checkData);
                 if (checkId) {
-                    LinkedHashMap<String, String> viewData = daoInterface.retrieve(client, mysqlDatabaseOperation, checkData);
-                    model.addAttribute("view", viewData);
-                    success = true;
+                    viewData = daoInterface.retrieve(client, mysqlDatabaseOperation, checkData);
+                   
                 } else {
                     message = "Id is not present";
                 }
@@ -76,8 +77,8 @@ public class ClientService {
         } catch (Exception e) {
             model.addAttribute("exp", e);
         }
-        model.addAttribute("success", success);
-        return message;
+       
+        return viewData;
     }
 
     public List<LinkedHashMap<String, String>> retrieveAll(Client client, Model model) {
@@ -125,9 +126,10 @@ public class ClientService {
 
     public void delete(Client client, Model model, HttpServletRequest request) {
         String idName = "clientId";
-        String id = request.getParameter(idName);
+        String id = client.getId();
         LinkedHashMap<String, String> checkData = new LinkedHashMap<>();
         checkData.put(idName, id);
+        System.out.println(checkData);
         try {
             daoInterface.delete(client, mysqlDatabaseOperation, checkData);
         } catch (Exception e) {
@@ -146,8 +148,6 @@ public class ClientService {
             String message = e.toString();
             list.clear();
             list.add(0,message);
-            System.out.println("Exception"+e);
-            System.out.println("list"+list);
             return false;
         }
     }

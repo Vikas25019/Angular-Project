@@ -8,16 +8,23 @@ import com.managementsystem.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ArrayList;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
 public class EmployeeController {
     @Autowired
     @Qualifier("daoImpl")
@@ -28,61 +35,48 @@ public class EmployeeController {
     @Qualifier("employeeService")
     private EmployeeService employeeService;
 
-    @RequestMapping(value = "/createEmployee", method = RequestMethod.GET)
-    public String create(@ModelAttribute("employee") Employee employee) {
-        return "employee/createemployee";
+	@PostMapping("/saveEmployee")
+    public ResponseEntity<?> save(@RequestBody Employee employee, Model model) {
+		System.out.println(employee.getDateOfBirth());
+        String message = employeeService.create(employee,model);
+        System.out.println(message);
+        return ResponseEntity.ok().body(message);
+    }
+	
+	@GetMapping("/retrieveEmployee/{id}")
+    public @ResponseBody List<LinkedHashMap<String,String>> read(Employee employee,@PathVariable("id") String id, Model model,HttpServletResponse response) {
+		employee.setId(id);
+        response.setContentType("application/json");
+        LinkedHashMap<String, String> data = employeeService.retrieve(employee, model);
+        List<LinkedHashMap<String,String>> list  = new ArrayList<>();
+        list.add(data);
+        return list;
+    }
+	
+	@RequestMapping(value = "/retrieveAllEmployee", method = RequestMethod.GET)
+    public @ResponseBody List<LinkedHashMap<String, String>> readAll(Employee employee, Model model ,HttpServletResponse response) {
+		response.setContentType("application/json");  
+        List<LinkedHashMap<String, String>> data = employeeService.retrieveAll(employee, model);
+        return data;
     }
 
-    @RequestMapping(value = "/saveEmployee", method = RequestMethod.GET)
-    public String save(@ModelAttribute("employee") Employee employee, Model model) {
-        String message = employeeService.create(employee, model);
-        model.addAttribute("message", message);
-        return "employee/createemployee";
-    }
 
-    @RequestMapping(value = "/viewEmployee", method = RequestMethod.GET)
-    public String viewClient(@ModelAttribute("employee") Employee employee) {
-        return "employee/showemployee";
-    }
-
-    @RequestMapping(value = "/retrieveEmployee", method = RequestMethod.GET)
-    public String read(@Valid @ModelAttribute("employee") Employee employee, Model model) {
-        String path = "employee/showemployee";
-        String message = employeeService.retrieve(employee, model);
-        model.addAttribute("message", message);
-        boolean success = (boolean) model.getAttribute("success");
-        if (success) {
-            path = "employee/viewemployee";
-        }
-        return path;
-    }
-
-    @RequestMapping(value = "/retrieveAllEmployee", method = RequestMethod.GET)
-    public String readAll(@Valid @ModelAttribute("employee") Employee employee, BindingResult result, Model model) {
-        employeeService.retrieveAll(employee, model);
-        return "employee/showAllEmployee";
-    }
-
-    @RequestMapping(value = "/updateEmployeePage", method = RequestMethod.GET)
-    public String updatePage(@ModelAttribute("employee") Employee employee) {
-        return "employee/updateemployee";
-    }
-
-    @RequestMapping(value = "/updateEmployee", method = RequestMethod.GET)
-    public String update(@Valid @ModelAttribute("employee") Employee employee, Model model) {
-        String path = "employee/updateemployee";
+    @PostMapping("/updateEmployee")
+    public ResponseEntity<?> update(@RequestBody Employee employee, Model model) {
+		
+		System.out.println("dob"+employee.getDateOfBirth());
         String message = employeeService.update(employee, model);
-        model.addAttribute("message", message);
-        boolean success = (boolean) model.getAttribute("success");
-        if (success) {
-            path = "redirect:retrieveAllEmployee";
-        }
-        return path;
+        return ResponseEntity.ok().body(message);
     }
 
-    @RequestMapping(value = "/deleteEmployee", method = RequestMethod.GET)
-    public String delete(@ModelAttribute("employee") Employee employee, Model model, HttpServletRequest request) {
+   
+	@DeleteMapping("/deleteEmployee/{id}")
+    public ResponseEntity<?> deleteClient(Employee employee,@PathVariable("id") String id, Model model, HttpServletRequest request) {
+		employee.setId(id);
+		System.out.println(id);
         employeeService.delete(employee, model, request);
-        return "redirect:retrieveAllEmployee";
+        return ResponseEntity.ok().body("employee deleted..");
     }
+   
+   
 }

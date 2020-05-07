@@ -7,19 +7,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,21 +29,14 @@ public class ClientController {
         return ResponseEntity.ok().body(message);
     }
 
-    @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public String viewClient(@ModelAttribute("client") Client client) {
-        return "client/showclient";
-    }
-
-    @RequestMapping(value = "/retrieve", method = RequestMethod.GET)
-    public String read(@ModelAttribute("client") Client client, Model model) {
-        String path = "client/showclient";
-        String message = clientService.retrieve(client, model);
-        model.addAttribute("message", message);
-        boolean success = (boolean) model.getAttribute("success");
-        if (success) {
-            path = "client/viewclient";
-        }
-        return path;
+    @GetMapping("/retrieveClient/{id}")
+    public @ResponseBody List<LinkedHashMap<String,String>> read(Client client,@PathVariable("id") String id, Model model,HttpServletResponse response) {
+		client.setId(id);
+        response.setContentType("application/json");
+        LinkedHashMap<String, String> data = clientService.retrieve(client, model);
+        List<LinkedHashMap<String,String>> list  = new ArrayList<>();
+        list.add(data);
+        return list;
     }
 
     @RequestMapping(value = "/retrieveAll", method = RequestMethod.GET)
@@ -59,29 +45,20 @@ public class ClientController {
         List<LinkedHashMap<String, String>> data = clientService.retrieveAll(client, model);
         return data;
     }
-
-    @RequestMapping(value = "/updateClientPage", method = RequestMethod.GET)
-    public String updatePage(@ModelAttribute("client") Client client) {
-        return "client/update";
-    }
-
     
-    @GetMapping(value = "/updateClient")
-    public String update(@ModelAttribute("client") Client client, Model model) {
-        String path = "client/update";
+    @PostMapping("/updateClient")
+    public ResponseEntity<?> update(@RequestBody Client client, Model model) {
+		System.out.println("id"+client.getId());
         String message = clientService.update(client, model);
-        model.addAttribute("message", message);
-        boolean success = (boolean) model.getAttribute("success");
-        if (success) {
-            path = "redirect:retrieveAll";
-        }
-        return path;
+        return ResponseEntity.ok().body(message);
     }
 
-    @RequestMapping(value = "/deleteClient", method = RequestMethod.GET)
-    public String delete(@ModelAttribute("client") Client client, Model model, HttpServletRequest request) {
+    @DeleteMapping("/deleteClient/{id}")
+    public ResponseEntity<?> deleteClient(Client client,@PathVariable("id") String id, Model model, HttpServletRequest request) {
+		client.setId(id);
+		System.out.println(id);
         clientService.delete(client, model, request);
-        return "redirect:retrieveAll";
+        return ResponseEntity.ok().body("client deleted..");
     }
 
 }

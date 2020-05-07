@@ -24,7 +24,8 @@ public class MappingDatabase {
     IDaoInterface<Client, MysqlDatabaseOperation> daoInterface2;
 
     MysqlDatabaseOperation<MappingDatabase> mysqlDatabaseOperation = MysqlDatabaseOperation.getInstance();
-
+	Employee employee = new Employee();
+	
     public void createMapping(Employee employee, Model model) {
         final String CLIENT_ID = "clientId";
         final String EMPLOYEE_ID = "employeeId";
@@ -41,7 +42,7 @@ public class MappingDatabase {
         }
     }
 
-    public void viewMapping(Model model, HttpServletRequest request) {
+    public LinkedHashMap<String, String> viewMapping(Employee employee,Model model) {
         String employeeIdColumn = "employeeId";
         String clientId = "clientId";
 
@@ -49,8 +50,9 @@ public class MappingDatabase {
         Client client = new Client();
 
         LinkedHashMap<String, String> data = new LinkedHashMap<>();
+        LinkedHashMap<String, String> viewData = new LinkedHashMap<>();
 
-        String employeeIdValue = request.getParameter(employeeIdColumn);
+        String employeeIdValue = employee.getId();
         data.put(employeeIdColumn, employeeIdValue);
 
         try {
@@ -59,12 +61,13 @@ public class MappingDatabase {
                 data.clear();
                 data.put(clientId, getId);
                 model.addAttribute("data", data);
-                LinkedHashMap<String, String> viewData = daoInterface2.retrieve(client, mysqlDatabaseOperation, data);
+                viewData = daoInterface2.retrieve(client, mysqlDatabaseOperation, data);
                 model.addAttribute("viewData", viewData);
             }
         } catch (Exception e) {
             model.addAttribute("exception", e);
         }
+        return viewData;
     }
 
     public void removeMapping(LinkedHashMap<String, String> checkData, Model model) {
