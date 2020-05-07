@@ -5,9 +5,9 @@
 	<div class="insert" id ="insert" style="display:block">
 		<p style="color:white;text-align:center;font-size:20px;">CREATE NEW CLIENT</p>
 		<form>
-            <input type="text" [(ngModel)] = "client.id" name="id" placeholder="Enter id"/><br>
-			<input type="text" [(ngModel)] = "client.name" name="name" placeholder="Enter name"/><br>
-			<input type="text" [(ngModel)] = "client.address" name="address"  placeholder="Enter address"/><br>
+            <input type="text" [(ngModel)] = "client.id" name="id" placeholder="Enter id" value=""/><br>
+			<input type="text" [(ngModel)] = "client.name" name="name" placeholder="Enter name" value=""/><br>
+			<input type="text" [(ngModel)] = "client.address" name="address"  placeholder="Enter address" value=""/><br>
 			<input (click)="addClient()" type="submit" style="text-align:center; cursor:pointer;">
          </form>
     </div>

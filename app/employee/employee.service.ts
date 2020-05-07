@@ -35,9 +35,9 @@ export class EmployeeService {
    deleteEmployee(employeeId : string){
 		return this._httpService.delete("http://127.0.0.1:8989/ProjectDemo/deleteEmployee/"+employeeId);
 	}
-	
+	 
  retrieveEmployee(employeeId : string): Observable<Employee[]>{
 		return this._httpService.get("http://127.0.0.1:8989/ProjectDemo/retrieveEmployee/"+employeeId)
-		.map((response: Response)=>response.json()).catch(this.handleError);;
+		.map((response: Response)=>response.json()).catch(this.handleError);
 	}
 }

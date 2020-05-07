@@ -24,10 +24,10 @@
 				<td>{{employee.name}}</td>
 				<td>{{employee.department}}</td>
 				<td>{{employee.email}}</td>
-				<td>{{employee.address}}</td>
+				<td>{{employee.dob}}</td>
 				<td><a [routerLink]="['/updateEmployee',employee.employeeId,employee.clientId]" >edit</a></td>
-				<td><button (click) = "deleteEmployee(employee.employeeId)">delete</button></td>
-				<td><button >View</button></td>
+				<td><a (click) = "deleteEmployee(employee.employeeId)" style="cursor:pointer" >delete</a></td>
+				<td><a [routerLink]="['/viewMapping',employee.employeeId]" style="cursor:pointer" >view</a></td>
 			</tr>
 		</tbody>
 	</table>

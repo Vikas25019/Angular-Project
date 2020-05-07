@@ -13,10 +13,12 @@ import { UpdateEmployeeComponent } from './employee/update-employee/update-emplo
 import { ViewClientPageComponent } from './client/view-client-page/view-client-page.component';
 import { ShowAllEmployeeComponent } from './employee/show-all-employee/show-all-employee.component';
 import { ViewEmployeePageComponent } from './employee/view-employee-page/view-employee-page.component';
+import { MappingComponent } from './mapping/mapping.component';
 
 const routes: Routes = [
 	{path: '',component: HomepageComponent},
 	{path: 'createclient',component: CreateClientComponent},
+	{path: 'viewMapping/:id',component: MappingComponent},
 	{path: 'updateClient/:id',component: UpdateClientComponent},
 	{path: 'updateEmployee/:id/:clientId',component: UpdateEmployeeComponent},
 	{path: 'createemployee',component: CreateEmployeeComponent},
@@ -34,4 +36,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [CreateClientComponent,ShowClientComponent,ViewEmployeePageComponent,ViewClientPageComponent,ShowAllClientComponent,ShowAllEmployeeComponent,UpdateEmployeeComponent,UpdateClientComponent,PageNotFoundComponent,  HomepageComponent ,CreateEmployeeComponent,ShowEmployeeComponent]
+export const routingComponents = [CreateClientComponent,MappingComponent,ShowClientComponent,ViewEmployeePageComponent,ViewClientPageComponent,ShowAllClientComponent,ShowAllEmployeeComponent,UpdateEmployeeComponent,UpdateClientComponent,PageNotFoundComponent,  HomepageComponent ,CreateEmployeeComponent,ShowEmployeeComponent]

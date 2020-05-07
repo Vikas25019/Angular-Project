@@ -19,7 +19,7 @@
 				<td>{{client.name}}</td>
 				<td>{{client.address}}</td>
 				<td><a [routerLink]="['/updateClient',client.clientId]" >edit</a></td>
-				<td><button (click) = "deleteClient(client.clientId)">delete</button></td>
+				<td><a (click) = "deleteClient(client.clientId)" style="cursor:pointer">delete</a></td>
 			</tr>
 		</tbody>
 	</table>

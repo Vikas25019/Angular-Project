@@ -13,6 +13,7 @@ import { ShowAllClientComponent } from './client/show-all-client/show-all-client
 import { ViewClientPageComponent } from './client/view-client-page/view-client-page.component';
 import { ShowAllEmployeeComponent } from './employee/show-all-employee/show-all-employee.component';
 import { ViewEmployeePageComponent } from './employee/view-employee-page/view-employee-page.component';
+import { MappingComponent } from './mapping/mapping.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { ViewEmployeePageComponent } from './employee/view-employee-page/view-em
     ShowAllClientComponent,
     ViewClientPageComponent,
     ShowAllEmployeeComponent,
-    ViewEmployeePageComponent
+    ViewEmployeePageComponent,
+    MappingComponent
   ],
   imports: [
     BrowserModule,
