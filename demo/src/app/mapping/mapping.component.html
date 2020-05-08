@@ -1,0 +1,22 @@
+<div>
+	<app-employee-header></app-employee-header>
+</div>
+
+<div class='tableContent'>
+	<table class='content-table-client'>
+		<thead>
+			<tr>
+				<th>ClientId</th>
+				<th>Name</th>
+				<th>Address</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let client of employees">
+				<td>{{client.clientId}}</td>
+				<td>{{client.name}}</td>
+				<td>{{client.address}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

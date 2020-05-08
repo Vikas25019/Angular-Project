@@ -1,0 +1,61 @@
+
+.body .background{
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:-1;
+    width:100%;
+    height:100%;
+    background-image: url("../assets/background.jpg");
+    background-position:center;
+    background-repeat:no-repeat;
+   	background-size:cover;
+   	background-attachment:fixed;
+    opacity: 0.1;
+}
+
+.body-content{
+    display:flex;
+    flex-grow:1;
+    flex-direction:row;
+    justify-content:center;
+    margin-top:15%;
+}
+.body .client{
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+    justify-content:center;
+
+}
+.body .client .img1 a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.body .employee .img2 a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.body .employee{
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+    justify-content:center;
+}
+.body .client .img1 a img{
+    width:50%;
+
+}
+.body .employee .img2 a img{
+    width:50%;
+}
+
+.body-content .text{
+    margin-top:30px;
+
+}
+
+

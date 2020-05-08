@@ -1,0 +1,18 @@
+<div>
+	<app-employee-header></app-employee-header>
+</div>
+<div class="middle">
+	<div class="insert" id="insert" style="display:block">
+		<p style="color:white;text-align:center;font-size:20px;">CREATE NEW EMPLOYEE</p>
+		<form>
+			<input type="text" [(ngModel)]="employee.id" name="employeeId" placeholder="Enter employee id" /><br>
+			<input type="text" [(ngModel)]="employee.clientId" name="clientId" placeholder="Enter client id" /><br>
+			<input type="text" [(ngModel)]="employee.name" name="name" placeholder="Enter employee name" /><br>
+			<input type="text" [(ngModel)]="employee.department" name="department" placeholder="Enter department" /><br>
+			<input type="text" [(ngModel)]="employee.email" name="email" placeholder="Enter email" /><br>
+			<input type="text" [(ngModel)]="employee.dateOfBirth" name="dateOfBirth"
+				placeholder="Enter Date Of Birth" /><br>
+			<input (click)="addEmployee()" type="submit" style="text-align:center; cursor:pointer;">
+		</form>
+	</div>
+</div>

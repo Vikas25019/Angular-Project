@@ -1,0 +1,35 @@
+<div>
+	<app-employee-header></app-employee-header>
+</div>
+
+<div class='tableContent'>
+	<table class='content-table-employee'>
+		<thead>
+			<tr>
+				<th>Employee Id</th>
+				<th>Client Id</th>
+				<th>Name</th>
+				<th>Department</th>
+				<th>Email</th>
+				<th>Date Of Birth</th>
+				<th>Edit</th>
+				<th>Delete</th>
+				<th>View</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let employee of employees">
+				<td>{{employee.employeeId}}</td>
+				<td>{{employee.clientId}}</td>
+				<td>{{employee.name}}</td>
+				<td>{{employee.department}}</td>
+				<td>{{employee.email}}</td>
+				<td>{{employee.dob}}</td>
+				<td><a [routerLink]="['/updateEmployee',employee.employeeId,employee.clientId]" >edit</a></td>
+				<td><a (click) = "deleteEmployee(employee.employeeId)" style="cursor:pointer">delete</a></td>
+				<td><a [routerLink]="['/viewMapping',employee.employeeId]" style="cursor:pointer">view</a></td>
+				
+			</tr>
+		</tbody>
+	</table>
+</div>

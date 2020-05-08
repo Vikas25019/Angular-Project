@@ -1,0 +1,50 @@
+.tableContent table{
+    border:none;
+    color:white;
+}
+
+.content-table-client{
+    border-collapse : collapse;
+    margin:25px 0;
+    font-size:0.9em;
+    min-width: 400px;
+}
+.tableContent{
+    margin-top:100px;
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    width:'100%';
+}
+
+.content-table-client thead tr{
+
+    color:white;
+    text-align:left;
+    font-weight: bold;
+
+}
+
+.content-table-client th,.content-table-client td{
+    padding:20px 100px;
+}
+
+.content-table-client tbody tr{
+   border-bottom: 1px solid #dddddd;
+
+}
+
+.content-table-client tbody tr:nth-of-type(even){
+    background-color:#f3f3f3;
+    color:black;
+}
+
+.content-table-client tbody tr:nth-of-type(even) td a{
+    background-color: #f3f3f3;
+    color: black;
+    text-decoration: none;
+}
+.content-table-client tbody tr:nth-of-type(odd) td a{
+    color: white;
+    text-decoration: none;
+}

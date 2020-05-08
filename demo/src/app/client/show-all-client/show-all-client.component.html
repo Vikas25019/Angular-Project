@@ -1,0 +1,25 @@
+<div>
+	<app-client-header></app-client-header>
+</div>
+<div class='tableContent'>
+	<table class='content-table-client'>
+		<thead>
+			<tr>
+				<th>ClientId</th>
+				<th>Name</th>
+				<th>Address</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let client of clients">
+				<td>{{client.clientId}}</td>
+				<td>{{client.name}}</td>
+				<td>{{client.address}}</td>
+				<td><a [routerLink]="['/updateClient',client.clientId]" >edit</a></td>
+				<td><a (click) = "deleteClient(client.clientId)" style="cursor:pointer">delete</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
