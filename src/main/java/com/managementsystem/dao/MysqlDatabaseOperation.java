@@ -1,6 +1,7 @@
 package com.managementsystem.dao;
 
 import org.springframework.stereotype.Component;
+
 import java.sql.*;
 
 import java.util.ArrayList;
@@ -13,31 +14,34 @@ import java.util.Iterator;
 
 @Component
 public class MysqlDatabaseOperation<T> {
+	
+	 private MysqlDatabaseOperation() {
+		 System.out.println("MysqlDatabaseOperation class constructor....");
+     }
 
-    final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; //JDBC Driver Name
-    final String DB_URL = "jdbc:mysql://localhost/client_database?autoReconnect=true&useSSL=false"; // JDBC DataBase Url
-    final String USER = "root";
-    final String PASS = "root";
+    //@value("com.mysql.jdbc.Driver")
+    private final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; //JDBC Driver Name
+    private final String DB_URL = "jdbc:mysql://localhost/client_database?autoReconnect=true&useSSL=false"; // JDBC DataBase Url
+    private final String USER = "root";
+    private final String PASS = "root";
 
-    final String insertQuery = "INSERT INTO %s values ( %s )";
-    final String selectQuery = "SELECT * FROM %s WHERE %s = %s";
-    final String deleteQuery = "DELETE FROM %s where %s = %s";
-    final String updateQuery = "UPDATE %s SET %s where %s = %s";
-    final String checkQuery = "SELECT count(*) from %s WHERE %s = %s";
+    private final String insertQuery = "INSERT INTO %s values ( %s )";
+    private final String selectQuery = "SELECT * FROM %s WHERE %s = %s";
+    private final String deleteQuery = "DELETE FROM %s where %s = %s";
+    private final String updateQuery = "UPDATE %s SET %s where %s = %s";
+    private final String checkQuery = "SELECT count(*) from %s WHERE %s = %s";
 
-    private static MysqlDatabaseOperation jdbc;
-
+    /* private static MysqlDatabaseOperation jdbc;
     private MysqlDatabaseOperation() {
-
     }
-
     public static MysqlDatabaseOperation getInstance() {
         if (jdbc == null) {
+			System.out.println("Mysql database operation get method is callled");
             jdbc = new MysqlDatabaseOperation();
         }
-
         return jdbc;
     }
+	*/
 
     private Connection mySqlDbConnection() throws ClassNotFoundException, SQLException {
         Connection connection = null;
@@ -84,7 +88,7 @@ public class MysqlDatabaseOperation<T> {
             i++;
         }
 
-       preparedStatement.executeUpdate();
+        preparedStatement.executeUpdate();
 
     }
 
@@ -112,11 +116,11 @@ public class MysqlDatabaseOperation<T> {
 
         String selectSql = String.format(selectQuery, tableName, columnName, id);
         ResultSet results = statement.executeQuery(selectSql);
-        LinkedHashMap<String , String> viewData = new LinkedHashMap<>();
+        LinkedHashMap<String, String> viewData = new LinkedHashMap<>();
         while (results.next()) {
             for (String columns : columnsSet) {
                 String result = results.getString(columns);
-                viewData.put(columns,result);
+                viewData.put(columns, result);
             }
         }
         return viewData;
@@ -171,7 +175,7 @@ public class MysqlDatabaseOperation<T> {
 
     }
 
-    List<LinkedHashMap<String,String>> retrieveAll(T t) throws SQLException, ClassNotFoundException {
+    List<LinkedHashMap<String, String>> retrieveAll(T t) throws SQLException, ClassNotFoundException {
         String tableName = t.getClass().getSimpleName().toLowerCase();
         String select = "select * from %s";
         String query = String.format(select, tableName);
@@ -185,17 +189,18 @@ public class MysqlDatabaseOperation<T> {
             String column = md.getColumnName(i);
             columnsSet.add(column);
         }
-        List<LinkedHashMap<String,String>> data= new ArrayList<>();
-        while(rs.next()){
-            LinkedHashMap<String,String> output = new LinkedHashMap<>();
-            for(String name : columnsSet){
+        List<LinkedHashMap<String, String>> data = new ArrayList<>();
+        while (rs.next()) {
+            LinkedHashMap<String, String> output = new LinkedHashMap<>();
+            for (String name : columnsSet) {
                 String result = rs.getString(name);
-                output.put(name,result);
+                output.put(name, result);
             }
             data.add(output);
         }
         return data;
     }
+
     <P> boolean checkIdMysql(P p, Map<String, String> data) throws SQLException, ClassNotFoundException {
         String columnName = "";
         Set<String> column = data.keySet();
@@ -222,7 +227,7 @@ public class MysqlDatabaseOperation<T> {
         return false;
     }
 
-    public String viewMappingInfo(T t,LinkedHashMap<String,String> data,String findColumnValue) throws SQLException, ClassNotFoundException {
+    public String viewMappingInfo(T t, LinkedHashMap<String, String> data, String findColumnValue) throws SQLException, ClassNotFoundException {
         String columnName = "";
         Set<String> column = data.keySet();
         for (String name : column) {
@@ -241,20 +246,19 @@ public class MysqlDatabaseOperation<T> {
         int col = md.getColumnCount();
 
         boolean flag = false;
-        for(int i =1;i<=col;i++){
-            if(md.getColumnName(i).equals(findColumnValue)){
+        for (int i = 1; i <= col; i++) {
+            if (md.getColumnName(i).equals(findColumnValue)) {
                 flag = true;
             }
         }
         String idValue = "";
-        if(flag){
+        if (flag) {
             String query1 = "SELECT %s FROM %s where %s = %s";
             rs = statement.executeQuery(String.format(query1, findColumnValue, tableName, columnName, id));
             while (rs.next()) {
                 idValue = rs.getString(findColumnValue);
             }
-        }
-        else{
+        } else {
             idValue = "";
         }
 

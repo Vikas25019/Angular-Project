@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 
 @Component("mapping")
@@ -23,10 +22,11 @@ public class MappingDatabase {
     @Qualifier("daoImpl")
     IDaoInterface<Client, MysqlDatabaseOperation> daoInterface2;
 
-    MysqlDatabaseOperation<MappingDatabase> mysqlDatabaseOperation = MysqlDatabaseOperation.getInstance();
-	Employee employee = new Employee();
-	
-    public void createMapping(Employee employee, Model model) {
+    @Autowired
+    @Qualifier("mysqlDatabaseOperation")
+    MysqlDatabaseOperation<MappingDatabase> mysqlDatabaseOperation;
+
+    public void createMapping(Employee employee) {
         final String CLIENT_ID = "clientId";
         final String EMPLOYEE_ID = "employeeId";
         String clientId = employee.getClientId();
@@ -38,11 +38,11 @@ public class MappingDatabase {
         try {
             daoInterface.create(mappingDatabase, mysqlDatabaseOperation, data);
         } catch (Exception e) {
-            model.addAttribute("excep", e);
+            System.out.println(e);
         }
     }
 
-    public LinkedHashMap<String, String> viewMapping(Employee employee,Model model) {
+    public LinkedHashMap<String, String> viewMapping(Employee employee) {
         String employeeIdColumn = "employeeId";
         String clientId = "clientId";
 
@@ -60,12 +60,10 @@ public class MappingDatabase {
             if (getId.length() != 0) {
                 data.clear();
                 data.put(clientId, getId);
-                model.addAttribute("data", data);
                 viewData = daoInterface2.retrieve(client, mysqlDatabaseOperation, data);
-                model.addAttribute("viewData", viewData);
             }
         } catch (Exception e) {
-            model.addAttribute("exception", e);
+            System.out.println(e);
         }
         return viewData;
     }

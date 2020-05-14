@@ -2,6 +2,7 @@ package com.managementsystem.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.net.UnknownHostException;
 import java.sql.*;
@@ -12,6 +13,7 @@ import java.util.List;
 public class DaoImplementation<T, U> implements IDaoInterface<T, U> {
 
     @Autowired
+    @Qualifier("mysqlDatabaseOperation")
     MysqlDatabaseOperation<T> mysqlDatabaseOperation;
 
     @Override
@@ -39,7 +41,7 @@ public class DaoImplementation<T, U> implements IDaoInterface<T, U> {
     @Override
     public void update(T t, U u, LinkedHashMap<String, String> data, String columnName) throws SQLException, ClassNotFoundException, UnknownHostException {
         if (u instanceof MysqlDatabaseOperation) {
-           mysqlDatabaseOperation.updateInDatabase(t, data, columnName);
+            mysqlDatabaseOperation.updateInDatabase(t, data, columnName);
         } else {
             throw new UnsupportedOperationException("Invalid Operation");
         }

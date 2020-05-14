@@ -16,12 +16,17 @@ import java.util.ArrayList;
 
 @Component("clientService")
 public class ClientService {
+	
+	@Autowired
+    @Qualifier("mysqlDatabaseOperation")
+    MysqlDatabaseOperation<Client> mysqlDatabaseOperation;
+    
     @Autowired
     @Qualifier("daoImpl")
     IDaoInterface<Client, MysqlDatabaseOperation> daoInterface;
-    MysqlDatabaseOperation<Client> mysqlDatabaseOperation = MysqlDatabaseOperation.getInstance();
-	List<String> messageList = new ArrayList();
-	
+
+    List<String> messageList = new ArrayList();
+
     public String create(Client client) {
         String ID = "clientId";
         String message = "";
@@ -30,9 +35,8 @@ public class ClientService {
         try {
             LinkedHashMap<String, String> data = client.clientData();
             String id = client.getId();
-            
-            
-            boolean valid = clientService.inputValidation(client,messageList);
+
+            boolean valid = clientService.inputValidation(client, messageList);
             if (valid) {
                 LinkedHashMap<String, String> checkData = new LinkedHashMap<>();
                 checkData.put(ID, id);
@@ -43,48 +47,48 @@ public class ClientService {
                 } else {
                     message = "Id already present";
                 }
+            } else {
+                message = messageList.get(0);
             }
-            else{
-				message=messageList.get(0);
-			}
         } catch (Exception e) {
-            System.out.println("Exception"+e);
+            System.out.println("Exception" + e);
         }
-        System.out.println("message"+message);
+        System.out.println("message" + message);
         return message;
     }
 
     public LinkedHashMap<String, String> retrieve(Client client, Model model) {
-        
+
         String column = "clientId";
         String message = "";
-        LinkedHashMap<String, String> viewData  = new LinkedHashMap<>();
+        LinkedHashMap<String, String> viewData = new LinkedHashMap<>();
         LinkedHashMap<String, String> checkData = new LinkedHashMap<>();
         ClientService clientService = new ClientService();
         String id = client.getId();
         checkData.put(column, id);
         try {
-            boolean valid = clientService.userIdValidation(client);
+            boolean valid = clientService.userIdValidation(client, messageList);
             if (valid) {
                 boolean checkId = daoInterface.isIdPresent(client, mysqlDatabaseOperation, checkData);
                 if (checkId) {
                     viewData = daoInterface.retrieve(client, mysqlDatabaseOperation, checkData);
-                   
                 } else {
                     message = "Id is not present";
                 }
+            } else {
+                message = messageList.get(0);
             }
         } catch (Exception e) {
-            model.addAttribute("exp", e);
+            System.out.println(e);
         }
-       
+        model.addAttribute("message", message);
         return viewData;
     }
 
     public List<LinkedHashMap<String, String>> retrieveAll(Client client, Model model) {
-         List<LinkedHashMap<String, String>> data = new ArrayList<>();
+        List<LinkedHashMap<String, String>> data = new ArrayList<>();
         try {
-             data = daoInterface.retrieveAll(client, mysqlDatabaseOperation);
+            data = daoInterface.retrieveAll(client, mysqlDatabaseOperation);
             model.addAttribute("data", data);
         } catch (Exception e) {
             model.addAttribute("e", e);
@@ -98,7 +102,7 @@ public class ClientService {
         String message = "";
         ClientService clientService = new ClientService();
         try {
-            boolean valid = clientService.inputValidation(client,messageList);
+            boolean valid = clientService.inputValidation(client, messageList);
             if (valid) {
                 LinkedHashMap<String, String> data = client.clientData();
                 String id = data.get(idName);
@@ -137,7 +141,7 @@ public class ClientService {
         }
     }
 
-    private boolean inputValidation(Client client,List<String> list){
+    private boolean inputValidation(Client client, List<String> list) {
         InputValidation inputValidation = new InputValidation();
         try {
             inputValidation.userIdValidator(client.getId());
@@ -147,18 +151,21 @@ public class ClientService {
         } catch (Exception e) {
             String message = e.toString();
             list.clear();
-            list.add(0,message);
+            list.add(0, message);
             return false;
         }
     }
 
-    private boolean userIdValidation(Client client) {
+    private boolean userIdValidation(Client client, List<String> list) {
         InputValidation inputValidation = new InputValidation();
         try {
             inputValidation.userIdValidator(client.getId());
             return true;
         } catch (Exception e) {
-            System.out.println("Exception"+e);
+            System.out.println("Exception" + e);
+            String message = e.toString();
+            list.clear();
+            list.add(0, message);
             return false;
         }
     }

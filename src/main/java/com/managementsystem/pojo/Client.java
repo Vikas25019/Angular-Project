@@ -1,13 +1,14 @@
 package com.managementsystem.pojo;
 
 import org.springframework.stereotype.Component;
+
 import java.util.LinkedHashMap;
 
 @Component
 public class Client extends Person {
 
     private String address;
-    private LinkedHashMap<String,String> map = new LinkedHashMap<>();
+    private LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
     public String getAddress() {
         return address;
@@ -17,10 +18,10 @@ public class Client extends Person {
         this.address = address;
     }
 
-    public LinkedHashMap<String,String> clientData() {
-        map.put("clientId",getId());
-        map.put("name",getName());
-        map.put("address",getAddress());
+    public LinkedHashMap<String, String> clientData() {
+        map.put("clientId", getId());
+        map.put("name", getName());
+        map.put("address", getAddress());
         return map;
     }
 }

@@ -3,7 +3,7 @@ package com.managementsystem.pojo;
 import org.springframework.stereotype.Component;
 import java.util.LinkedHashMap;
 
-@Component
+@Component("employee")
 public class Employee extends Person {
     private String clientId;
     private String department;
