@@ -15,10 +15,6 @@ import java.util.Iterator;
 @Component
 public class MysqlDatabaseOperation<T> {
 	
-	 private MysqlDatabaseOperation() {
-		 System.out.println("MysqlDatabaseOperation class constructor....");
-     }
-
     //@value("com.mysql.jdbc.Driver")
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; //JDBC Driver Name
     private final String DB_URL = "jdbc:mysql://localhost/client_database?autoReconnect=true&useSSL=false"; // JDBC DataBase Url

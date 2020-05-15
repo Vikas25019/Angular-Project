@@ -1,13 +1,12 @@
 package com.managementsystem.service;
 
 import com.managementsystem.dao.IDaoInterface;
-import com.managementsystem.dao.MysqlDatabaseOperation;
 import com.managementsystem.inputvalidation.InputValidation;
 import com.managementsystem.pojo.Client;
 import com.managementsystem.pojo.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,19 +14,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-@Component("employeeService")
+@Service
 public class EmployeeService {
     @Autowired
     @Qualifier("daoImpl")
-    IDaoInterface<Employee, MysqlDatabaseOperation> daoInterface;
+    IDaoInterface<Employee> daoInterface;
 
     @Autowired
     @Qualifier("daoImpl")
-    IDaoInterface<Client, MysqlDatabaseOperation> daoInterfaceClient;
-
-    @Autowired
-    @Qualifier("mysqlDatabaseOperation")
-    MysqlDatabaseOperation<Employee> mysqlDatabaseOperation;
+    IDaoInterface<Client> daoInterfaceClient;
 
     List<String> messageList = new ArrayList();
 
@@ -48,13 +43,13 @@ public class EmployeeService {
             checkData.put(EMPLOYEE_ID, data.get(EMPLOYEE_ID));
             String clientId = data.get(CLIENT_ID);
             try {
-                boolean checkId = daoInterface.isIdPresent(employee, mysqlDatabaseOperation, checkData);
+                boolean checkId = daoInterface.isIdPresent(employee, checkData);
                 if (!checkId) {
                     checkData.clear();
                     checkData.put(CLIENT_ID, clientId);
-                    boolean checkClientId = daoInterfaceClient.isIdPresent(client, mysqlDatabaseOperation, checkData);
+                    boolean checkClientId = daoInterfaceClient.isIdPresent(client, checkData);
                     if (checkClientId) {
-                        daoInterface.create(employee, mysqlDatabaseOperation, data);
+                        daoInterface.create(employee, data);
                         mappingDatabase.createMapping(employee);
                         message = "Record saved successfully!";
                     } else {
@@ -85,9 +80,9 @@ public class EmployeeService {
         try {
             boolean valid = employeeService.userIdValidation(employee, messageList);
             if (valid) {
-                boolean checkId = daoInterface.isIdPresent(employee, mysqlDatabaseOperation, checkData);
+                boolean checkId = daoInterface.isIdPresent(employee, checkData);
                 if (checkId) {
-                    viewData = daoInterface.retrieve(employee, mysqlDatabaseOperation, checkData);
+                    viewData = daoInterface.retrieve(employee, checkData);
                     model.addAttribute("view", viewData);
 
                 } else {
@@ -106,7 +101,7 @@ public class EmployeeService {
     public List<LinkedHashMap<String, String>> retrieveAll(Employee employee, Model model) {
         List<LinkedHashMap<String, String>> data = new ArrayList<>();
         try {
-            data = daoInterface.retrieveAll(employee, mysqlDatabaseOperation);
+            data = daoInterface.retrieveAll(employee);
             model.addAttribute("data", data);
         } catch (Exception e) {
             model.addAttribute("e", e);
@@ -128,9 +123,9 @@ public class EmployeeService {
                 LinkedHashMap<String, String> checkData = new LinkedHashMap<>();
                 checkData.put(idName, id);
                 System.out.println(data);
-                boolean checkId = daoInterface.isIdPresent(employee, mysqlDatabaseOperation, checkData);
+                boolean checkId = daoInterface.isIdPresent(employee, checkData);
                 if (checkId) {
-                    daoInterface.update(employee, mysqlDatabaseOperation, data, idName);
+                    daoInterface.update(employee, data, idName);
                     message = "Record update successfully!";
                 } else {
                     message = "Id is not present";
@@ -152,7 +147,7 @@ public class EmployeeService {
         LinkedHashMap<String, String> checkData = new LinkedHashMap<>();
         checkData.put(idName, id);
         try {
-            daoInterface.delete(employee, mysqlDatabaseOperation, checkData);
+            daoInterface.delete(employee,checkData);
             mappingDatabase.removeMapping(checkData, model);
         } catch (Exception e) {
             model.addAttribute("exception", e);

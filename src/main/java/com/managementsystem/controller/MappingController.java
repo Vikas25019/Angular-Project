@@ -5,7 +5,7 @@ import com.managementsystem.service.MappingDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
-
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
-@RestController
+@Controller
 public class MappingController {
     @Autowired
     @Qualifier("mapping")

@@ -1,12 +1,11 @@
 package com.managementsystem.service;
 
 import com.managementsystem.dao.IDaoInterface;
-import com.managementsystem.dao.MysqlDatabaseOperation;
 import com.managementsystem.inputvalidation.InputValidation;
 import com.managementsystem.pojo.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,21 +13,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-@Component("clientService")
+@Service("clientService")
 public class ClientService {
-	
-	@Autowired
-    @Qualifier("mysqlDatabaseOperation")
-    MysqlDatabaseOperation<Client> mysqlDatabaseOperation;
-    
+
     @Autowired
     @Qualifier("daoImpl")
-    IDaoInterface<Client, MysqlDatabaseOperation> daoInterface;
+    IDaoInterface<Client> daoInterface;
 
     List<String> messageList = new ArrayList();
 
     public String create(Client client) {
-        String ID = "clientId";
+        final String ID = "clientId";
         String message = "";
         ClientService clientService = new ClientService();
 
@@ -40,9 +35,9 @@ public class ClientService {
             if (valid) {
                 LinkedHashMap<String, String> checkData = new LinkedHashMap<>();
                 checkData.put(ID, id);
-                boolean checkId = daoInterface.isIdPresent(client, mysqlDatabaseOperation, checkData);
+                boolean checkId = daoInterface.isIdPresent(client, checkData);
                 if (!checkId) {
-                    daoInterface.create(client, mysqlDatabaseOperation, data);
+                    daoInterface.create(client, data);
                     message = "Record saved successfully!";
                 } else {
                     message = "Id already present";
@@ -69,9 +64,9 @@ public class ClientService {
         try {
             boolean valid = clientService.userIdValidation(client, messageList);
             if (valid) {
-                boolean checkId = daoInterface.isIdPresent(client, mysqlDatabaseOperation, checkData);
+                boolean checkId = daoInterface.isIdPresent(client, checkData);
                 if (checkId) {
-                    viewData = daoInterface.retrieve(client, mysqlDatabaseOperation, checkData);
+                    viewData = daoInterface.retrieve(client, checkData);
                 } else {
                     message = "Id is not present";
                 }
@@ -88,7 +83,7 @@ public class ClientService {
     public List<LinkedHashMap<String, String>> retrieveAll(Client client, Model model) {
         List<LinkedHashMap<String, String>> data = new ArrayList<>();
         try {
-            data = daoInterface.retrieveAll(client, mysqlDatabaseOperation);
+            data = daoInterface.retrieveAll(client);
             model.addAttribute("data", data);
         } catch (Exception e) {
             model.addAttribute("e", e);
@@ -109,9 +104,9 @@ public class ClientService {
                 LinkedHashMap<String, String> checkData = new LinkedHashMap<>();
                 checkData.put(idName, id);
 
-                boolean checkId = daoInterface.isIdPresent(client, mysqlDatabaseOperation, checkData);
+                boolean checkId = daoInterface.isIdPresent(client, checkData);
                 if (checkId) {
-                    daoInterface.update(client, mysqlDatabaseOperation, data, idName);
+                    daoInterface.update(client, data, idName);
                     message = "Record update successfully!";
                     success = true;
 
@@ -135,7 +130,7 @@ public class ClientService {
         checkData.put(idName, id);
         System.out.println(checkData);
         try {
-            daoInterface.delete(client, mysqlDatabaseOperation, checkData);
+            daoInterface.delete(client, checkData);
         } catch (Exception e) {
             model.addAttribute("exception", e);
         }

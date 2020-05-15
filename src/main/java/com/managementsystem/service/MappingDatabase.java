@@ -1,30 +1,25 @@
 package com.managementsystem.service;
 
 import com.managementsystem.dao.IDaoInterface;
-import com.managementsystem.dao.MysqlDatabaseOperation;
 import com.managementsystem.pojo.Client;
 import com.managementsystem.pojo.Employee;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.LinkedHashMap;
 
-@Component("mapping")
+@Service("mapping")
 public class MappingDatabase {
     @Autowired
     @Qualifier("daoImpl")
-    IDaoInterface<MappingDatabase, MysqlDatabaseOperation> daoInterface;
+    IDaoInterface<MappingDatabase> daoInterface;
 
     @Autowired
     @Qualifier("daoImpl")
-    IDaoInterface<Client, MysqlDatabaseOperation> daoInterface2;
-
-    @Autowired
-    @Qualifier("mysqlDatabaseOperation")
-    MysqlDatabaseOperation<MappingDatabase> mysqlDatabaseOperation;
+    IDaoInterface<Client> daoInterface2;
 
     public void createMapping(Employee employee) {
         final String CLIENT_ID = "clientId";
@@ -36,7 +31,7 @@ public class MappingDatabase {
         data.put(CLIENT_ID, clientId);
         data.put(EMPLOYEE_ID, employeeId);
         try {
-            daoInterface.create(mappingDatabase, mysqlDatabaseOperation, data);
+            daoInterface.create(mappingDatabase, data);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -56,11 +51,11 @@ public class MappingDatabase {
         data.put(employeeIdColumn, employeeIdValue);
 
         try {
-            String getId = daoInterface.viewMapping(mappingDatabase, mysqlDatabaseOperation, data, clientId);
+            String getId = daoInterface.viewMapping(mappingDatabase, data, clientId);
             if (getId.length() != 0) {
                 data.clear();
                 data.put(clientId, getId);
-                viewData = daoInterface2.retrieve(client, mysqlDatabaseOperation, data);
+                viewData = daoInterface2.retrieve(client, data);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -71,7 +66,7 @@ public class MappingDatabase {
     public void removeMapping(LinkedHashMap<String, String> checkData, Model model) {
         MappingDatabase mappingDatabase = new MappingDatabase();
         try {
-            daoInterface.delete(mappingDatabase, mysqlDatabaseOperation, checkData);
+            daoInterface.delete(mappingDatabase, checkData);
         } catch (Exception e) {
             model.addAttribute("exception", e);
         }

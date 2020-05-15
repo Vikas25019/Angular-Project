@@ -18,7 +18,7 @@ public class MyFrontController implements WebApplicationInitializer {
         annotationConfigWebApplicationContext.register(MvcConfig.class);
         //create Dispatcher servlet
         DispatcherServlet dispatcherServlet = new DispatcherServlet(annotationConfigWebApplicationContext);
-        //register dispatcher servlet with servletContext
+        //add dispatcher servlet with servletContext
         ServletRegistration.Dynamic myCustomDispatcherServlet = servletContext.addServlet("myDispatcherServlet",dispatcherServlet);
         myCustomDispatcherServlet.setLoadOnStartup(1);
         //setup url mapping
